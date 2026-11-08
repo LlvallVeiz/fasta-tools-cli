@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+"""Entry-point launcher: ``./fasta-tools <subcommand> ...`` or
+``python fasta-tools <subcommand> ...``.
+
+Adds ``src/`` to the import path, then runs the CLI. The same CLI is
+also available as ``PYTHONPATH=src python -m fasta_tools``.
+"""
+
+import os
+import sys
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
+
+from fasta_tools.cli import main  # noqa: E402
+
+if __name__ == "__main__":
+    sys.exit(main())
