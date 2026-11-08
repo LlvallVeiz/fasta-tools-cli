@@ -1,0 +1,13 @@
+>syn_short synthetic 20 bp test sequence, ACGT repeated
+ACGTACGTAC
+GTACGTACGT
+>syn_gc_rich synthetic GC-rich 30 bp test sequence
+GGGCCCGGGCCCGGGCCCGGGCCCGGGCCC
+>syn_at_rich synthetic AT-rich 40 bp test sequence, lowercase on purpose
+aaaattttaaaatttt
+aaaattttaaaatttt
+aaaatttt
+>syn_ambig synthetic 15 bp test sequence with ambiguous N bases
+ACGTNACGTNACGTN
+>syn_mixed synthetic 60 bp mixed sequence, GATTACA motif repeated
+GATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATT

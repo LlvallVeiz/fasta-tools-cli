@@ -1,0 +1,115 @@
+======================================================================
+fasta-tools-cli — example output (generated from real runs)
+Input: examples/sample.fasta (5 synthetic records, 165 bp total)
+Commands run on 2026-11-08 with: ./fasta-tools <subcommand> ...
+======================================================================
+
+### 1. stats — ./fasta-tools stats examples/sample.fasta
+----------------------------------------------------------------------
+records:        5
+total length:   165 bp
+min length:     15 bp
+max length:     60 bp
+mean length:    33.00 bp
+median length:  30.00 bp
+GC content:     38.18%
+N50:            40 bp
+L50:            2
+N bases:        3
+ambiguous:      0
+
+### 2. filter (min length 30) — ./fasta-tools filter --min-length 30 examples/sample.fasta
+----------------------------------------------------------------------
+>syn_gc_rich synthetic GC-rich 30 bp test sequence
+GGGCCCGGGCCCGGGCCCGGGCCCGGGCCC
+>syn_at_rich synthetic AT-rich 40 bp test sequence, lowercase on purpose
+AAAATTTTAAAATTTTAAAATTTTAAAATTTTAAAATTTT
+>syn_mixed synthetic 60 bp mixed sequence, GATTACA motif repeated
+GATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATT
+
+### 3. filter (header pattern 'GC-rich') — ./fasta-tools filter --header-pattern GC-rich examples/sample.fasta
+----------------------------------------------------------------------
+>syn_gc_rich synthetic GC-rich 30 bp test sequence
+GGGCCCGGGCCCGGGCCCGGGCCCGGGCCC
+
+### 4. extract (from file) — ./fasta-tools extract --id-file examples/ids.txt examples/sample.fasta
+----------------------------------------------------------------------
+>syn_gc_rich synthetic GC-rich 30 bp test sequence
+GGGCCCGGGCCCGGGCCCGGGCCCGGGCCC
+>syn_ambig synthetic 15 bp test sequence with ambiguous N bases
+ACGTNACGTNACGTN
+
+### 5. gc (per record) — ./fasta-tools gc examples/sample.fasta
+----------------------------------------------------------------------
+id	length	gc_percent
+syn_short	20	50.00
+syn_gc_rich	30	100.00
+syn_at_rich	40	0.00
+syn_ambig	15	40.00
+syn_mixed	60	28.33
+
+### 6. gc (sliding window, 10 bp) — ./fasta-tools gc --window 10 examples/sample.fasta
+----------------------------------------------------------------------
+id	window_start	gc_percent
+syn_short	1	50.00
+syn_short	11	50.00
+syn_gc_rich	1	100.00
+syn_gc_rich	11	100.00
+syn_gc_rich	21	100.00
+syn_at_rich	1	0.00
+syn_at_rich	11	0.00
+syn_at_rich	21	0.00
+syn_at_rich	31	0.00
+syn_ambig	1	40.00
+syn_ambig	11	40.00
+syn_mixed	1	30.00
+syn_mixed	11	30.00
+syn_mixed	21	30.00
+syn_mixed	31	20.00
+syn_mixed	41	40.00
+syn_mixed	51	20.00
+
+### 7. revcomp — ./fasta-tools revcomp examples/sample.fasta
+----------------------------------------------------------------------
+>syn_short synthetic 20 bp test sequence, ACGT repeated [reverse-complement]
+ACGTACGTACGTACGTACGT
+>syn_gc_rich synthetic GC-rich 30 bp test sequence [reverse-complement]
+GGGCCCGGGCCCGGGCCCGGGCCCGGGCCC
+>syn_at_rich synthetic AT-rich 40 bp test sequence, lowercase on purpose [reverse-complement]
+AAAATTTTAAAATTTTAAAATTTTAAAATTTTAAAATTTT
+>syn_ambig synthetic 15 bp test sequence with ambiguous N bases [reverse-complement]
+NACGTNACGTNACGT
+>syn_mixed synthetic 60 bp mixed sequence, GATTACA motif repeated [reverse-complement]
+AATCTGTAATCTGTAATCTGTAATCTGTAATCTGTAATCTGTAATCTGTAATCTGTAATC
+
+### 8. convert to TSV — ./fasta-tools convert --to tsv examples/sample.fasta
+----------------------------------------------------------------------
+id	length	gc_percent	description
+syn_short	20	50.00	synthetic 20 bp test sequence, ACGT repeated
+syn_gc_rich	30	100.00	synthetic GC-rich 30 bp test sequence
+syn_at_rich	40	0.00	synthetic AT-rich 40 bp test sequence, lowercase on purpose
+syn_ambig	15	40.00	synthetic 15 bp test sequence with ambiguous N bases
+syn_mixed	60	28.33	synthetic 60 bp mixed sequence, GATTACA motif repeated
+
+### 9. convert to one-line FASTA — ./fasta-tools convert --to oneline examples/sample.fasta
+----------------------------------------------------------------------
+>syn_short synthetic 20 bp test sequence, ACGT repeated
+ACGTACGTACGTACGTACGT
+>syn_gc_rich synthetic GC-rich 30 bp test sequence
+GGGCCCGGGCCCGGGCCCGGGCCCGGGCCC
+>syn_at_rich synthetic AT-rich 40 bp test sequence, lowercase on purpose
+AAAATTTTAAAATTTTAAAATTTTAAAATTTTAAAATTTT
+>syn_ambig synthetic 15 bp test sequence with ambiguous N bases
+ACGTNACGTNACGTN
+>syn_mixed synthetic 60 bp mixed sequence, GATTACA motif repeated
+GATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATT
+
+### 10. empty file error — ./fasta-tools stats /dev/null
+----------------------------------------------------------------------
+fasta-tools: error: /dev/null: file is empty (no FASTA records found)
+exit code: 2
+
+### 11. unknown ID error — ./fasta-tools extract --id no_such_id examples/sample.fasta
+----------------------------------------------------------------------
+fasta-tools: error: ID(s) not found: no_such_id
+exit code: 1
